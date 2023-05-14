@@ -2,14 +2,14 @@ package com.fungames.combate.pieces;
 
 import com.fungames.combate.pieces.type.Type;
 
-public class Captain extends GamePiece {
+public class Captain extends Piece {
     @Override
-    protected int power() {
+    public int power() {
         return type().power();
     }
 
     @Override
-    protected Type type() {
+    public Type type() {
         return Type.CAPTAIN;
     }
 }

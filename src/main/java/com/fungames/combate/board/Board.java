@@ -1,6 +1,6 @@
 package com.fungames.combate.board;
 
-import com.fungames.combate.pieces.GamePiece;
+import com.fungames.combate.pieces.Piece;
 import com.fungames.combate.pieces.direction.Direction;
 
 import java.util.Optional;
@@ -8,6 +8,7 @@ import java.util.Optional;
 public class Board {
 
     private final Grid grid;
+    private Item selectedItem;
 
     private Board(Grid grid) {
         this.grid = grid;
@@ -21,8 +22,8 @@ public class Board {
         this.grid.initCells();
     }
 
-    public void add(GamePiece gamePiece, Position position) {
-        this.grid.add(gamePiece, position);
+    public void add(Item item) {
+        this.grid.add(item);
     }
 
     public Grid getGrid() {
@@ -33,16 +34,24 @@ public class Board {
         return this.grid.totalCells();
     }
 
-    public Optional<GamePiece> getPieceAt(Position position) {
+    public Optional<Piece> getPieceAt(Position position) {
         return this.grid.getPieceAt(position);
     }
 
-    public Optional<Cell> getCellAt(Position position) {
+    public Cell getCellAt(Position position) {
         return this.grid.getCellAt(position);
     }
 
-    //TODO implement move action
-    public void move(GamePiece gamePiece, Direction newDirection) {
-        //...
+    public void moveSelectedItem(Direction newDirection) {
+        grid.moveSelectedItem(newDirection);
+    }
+
+    public void setSelectedItem(Item item) {
+        selectedItem = item;
+        grid.setSelectedItem(item);
+    }
+
+    public Item getSelectedItem() {
+        return selectedItem;
     }
 }

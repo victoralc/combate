@@ -1,20 +1,18 @@
 package com.fungames.combate.board;
 
 import com.fungames.combate.core.exceptions.InvalidCellPositionException;
-import com.fungames.combate.pieces.GamePiece;
-
-import java.util.Optional;
+import com.fungames.combate.pieces.Piece;
 
 class Cell {
     private final Position position;
-    private GamePiece gamePiece;
+    private Piece piece;
 
     private Cell(Position position) {
         this.position = position;
     }
 
-    private Cell(GamePiece gamePiece, Position position) {
-        this.gamePiece = gamePiece;
+    private Cell(Piece piece, Position position) {
+        this.piece = piece;
         this.position = position;
     }
 
@@ -24,30 +22,30 @@ class Cell {
         return new Cell(position);
     }
 
-    public static Cell with(GamePiece gamePiece, Position position) {
-        if (gamePiece == null)
-            throw new IllegalArgumentException("GamePiece of a cell cannot be null");
-        return new Cell(gamePiece, position);
+    public static Cell with(Piece piece, Position position) {
+        if (piece == null)
+            throw new IllegalArgumentException("Piece of a cell cannot be null");
+        return new Cell(piece, position);
     }
 
-    public void set(GamePiece gamePiece) {
-        this.gamePiece = gamePiece;
+    public void set(Piece piece) {
+        this.piece = piece;
     }
 
     public void removePiece() {
-        this.gamePiece = null;
+        this.piece = null;
     }
 
     public int line() {
         return this.position.line();
     }
 
-    public int column(){
+    public int column() {
         return this.position.column();
     }
 
-    public Optional<GamePiece> getPiece() {
-        return Optional.ofNullable(gamePiece);
+    public Piece getPiece() {
+        return piece;
     }
 
     public Position getPosition() {
@@ -55,10 +53,10 @@ class Cell {
     }
 
     public boolean isEmpty() {
-        return gamePiece == null;
+        return piece == null;
     }
 
-    public boolean contains(GamePiece piece) {
-        return !isEmpty() && this.gamePiece.equals(piece);
+    public boolean contains(Piece piece) {
+        return !isEmpty() && this.piece.equals(piece);
     }
 }

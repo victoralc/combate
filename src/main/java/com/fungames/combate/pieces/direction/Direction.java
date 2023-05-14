@@ -1,5 +1,5 @@
 package com.fungames.combate.pieces.direction;
 
 public enum Direction {
-    UO, DOWN, LEFT, RIGHT
+    UP, DOWN, LEFT, RIGHT
 }

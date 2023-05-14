@@ -2,7 +2,7 @@ package com.fungames.combate.pieces;
 
 import com.fungames.combate.pieces.type.Type;
 
-public class Corporal extends GamePiece {
+public class Corporal extends Piece {
 
     private Corporal() {}
 
@@ -11,12 +11,12 @@ public class Corporal extends GamePiece {
     }
 
     @Override
-    protected int power() {
+    public int power() {
         return type().power();
     }
 
     @Override
-    protected Type type() {
+    public Type type() {
         return Type.CORPORAL;
     }
 }

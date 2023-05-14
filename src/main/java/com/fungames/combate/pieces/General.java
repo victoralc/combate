@@ -2,15 +2,15 @@ package com.fungames.combate.pieces;
 
 import com.fungames.combate.pieces.type.Type;
 
-public class General extends GamePiece {
+public class General extends Piece {
 
     @Override
-    protected int power() {
+    public int power() {
         return type().power();
     }
 
     @Override
-    protected Type type() {
+    public Type type() {
         return Type.GENERAL;
     }
 }

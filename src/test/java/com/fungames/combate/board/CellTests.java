@@ -27,19 +27,19 @@ class CellTests {
         var secretAgent = SecretAgent.create();
         cell = Cell.with(secretAgent, POSITION_2x5);
 
-        assertFalse(cell.getPiece().isEmpty());
-        assertNotNull(cell.getPiece().get());
-        assertInstanceOf(SecretAgent.class, cell.getPiece().get());
+        assertFalse(cell.isEmpty());
+        assertNotNull(cell.getPiece());
+        assertInstanceOf(SecretAgent.class, cell.getPiece());
     }
 
     @Test
     void shouldAddAPieceIntoACellAtAGivenPosition() {
-        var bomb = Bomb.create();
+        var bomb = Bomb.newBomb();
         cell.set(bomb);
 
-        assertFalse(cell.getPiece().isEmpty());
-        assertNotNull(cell.getPiece().get());
-        assertInstanceOf(Bomb.class, cell.getPiece().get());
+        assertFalse(cell.isEmpty());
+        assertNotNull(cell.getPiece());
+        assertInstanceOf(Bomb.class, cell.getPiece());
     }
 
     @Test
@@ -47,7 +47,7 @@ class CellTests {
         cell.removePiece();
 
         assertTrue(cell.isEmpty());
-        assertTrue(cell.getPiece().isEmpty());
+        assertTrue(cell.isEmpty());
     }
 
     @Test
@@ -56,7 +56,7 @@ class CellTests {
         cell.removePiece();
 
         assertTrue(cell.isEmpty());
-        assertTrue(cell.getPiece().isEmpty());
+        assertTrue(cell.isEmpty());
     }
 
     @Test
@@ -71,12 +71,12 @@ class CellTests {
 
     @Test
     void shouldGetAPieceOfTheCellForAGivenPosition() {
-        var bomb = Bomb.create();
+        var bomb = Bomb.newBomb();
         cell = Cell.with(bomb, POSITION_2x5);
 
-        assertFalse(cell.getPiece().isEmpty());
-        assertNotNull(cell.getPiece().get());
-        assertInstanceOf(Bomb.class, cell.getPiece().get());
+        assertFalse(cell.isEmpty());
+        assertNotNull(cell.getPiece());
+        assertInstanceOf(Bomb.class, cell.getPiece());
     }
 
     @Test

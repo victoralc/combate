@@ -1,16 +1,15 @@
 package com.fungames.combate.pieces;
 
-import com.fungames.combate.board.Position;
 import com.fungames.combate.pieces.type.Type;
 
-public class Lieutenant extends GamePiece {
+public class Lieutenant extends Piece {
     @Override
-    protected int power() {
+    public int power() {
         return type().power();
     }
 
     @Override
-    protected Type type() {
+    public Type type() {
         return Type.LIEUTENANT;
     }
 }

@@ -2,21 +2,21 @@ package com.fungames.combate.pieces;
 
 import com.fungames.combate.pieces.type.Type;
 
-public class Bomb extends GamePiece {
+public class Bomb extends Piece {
 
     private Bomb() {}
 
-    public static Bomb create() {
+    public static Bomb newBomb() {
         return new Bomb();
     }
 
     @Override
-    protected int power() {
+    public int power() {
         return type().power();
     }
 
     @Override
-    protected Type type() {
+    public Type type() {
         return Type.BOMB;
     }
 }

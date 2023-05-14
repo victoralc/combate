@@ -1,7 +1,9 @@
 package com.fungames.combate.board;
 
+import com.fungames.combate.core.exceptions.CellNotExistsException;
 import com.fungames.combate.core.exceptions.InvalidCellPositionException;
-import com.fungames.combate.pieces.GamePiece;
+import com.fungames.combate.pieces.Piece;
+import com.fungames.combate.pieces.direction.Direction;
 
 import java.util.Arrays;
 import java.util.Optional;
@@ -9,6 +11,7 @@ import java.util.stream.Stream;
 
 class Grid {
     private final Cell[][] cells;
+    private Item selectedItem;
 
     private Grid(int line, int column) {
         this.cells = new Cell[line][column];
@@ -26,15 +29,25 @@ class Grid {
         }
     }
 
-    public void add(GamePiece gamePiece, Position position) {
-        Optional<Cell> optCell = getCellAt(position);
-        optCell.ifPresent(cell -> cell.set(gamePiece));
+    public void setSelectedItem(Item selectedItem) {
+        this.selectedItem = selectedItem;
     }
 
-    public Optional<Cell> getCellAt(Position position) {
+    public void add(Item item) {
+        Cell cell = getCellAt(item.getCurrentPosition());
+        if (cell.isEmpty()) {
+            cell.set(item.getPiece());
+        }
+    }
+
+    public Cell getCellAt(Position position) {
         try {
             Cell cell = cells[position.line()][position.column()];
-            return Optional.ofNullable(cell);
+            if (cell == null) {
+                throw new CellNotExistsException(
+                        String.format("Cell does not exists at position %s. It might not have been initialized.", position));
+            }
+            return cell;
         } catch (ArrayIndexOutOfBoundsException ex) {
           throw new InvalidCellPositionException("Invalid position for the cell.");
         }
@@ -50,21 +63,37 @@ class Grid {
                 .sum();
     }
 
-    public Optional<GamePiece> getPieceAt(Position position) {
-        var optionalCell = getCellAt(position);
-        if (optionalCell.isPresent()) {
-            return optionalCell.get().getPiece();
-        }
-        return Optional.empty();
+    public Optional<Piece> getPieceAt(Position position) {
+        var cell = getCellAt(position);
+        return Optional.ofNullable(cell.getPiece());
     }
 
-    public void remove(GamePiece gamePiece, Position position) {
-        getCellAt(position)
-            .ifPresent(cell -> {
-                if (cell.contains(gamePiece)) {
-                    cell.removePiece();
-                }
-            }
-        );
+    public void remove(Item item) {
+        Cell cell = getCellAt(item.getCurrentPosition());
+        if (cell.contains(item.getPiece())) {
+            cell.removePiece();
+        }
+    }
+
+    public void moveSelectedItem(Direction direction) {
+        removeSelectedItemFromItsCell();
+        selectedItem.move(direction);
+        setSelectedItemToTheNewCell();
+    }
+
+    public void removeSelectedItemFromItsCell() {
+        Cell cell = getCellAt(selectedItem.getCurrentPosition());
+        if (cell.contains(selectedItem.getPiece())) {
+            cell.removePiece();
+        }
+    }
+
+    private void setSelectedItemToTheNewCell() {
+        Cell cell = getCellAt(selectedItem.getCurrentPosition());
+        cell.set(selectedItem.getPiece());
+    }
+
+    public Item getSelectedItem() {
+        return selectedItem;
     }
 }

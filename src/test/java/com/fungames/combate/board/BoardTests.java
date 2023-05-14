@@ -1,8 +1,9 @@
 package com.fungames.combate.board;
 
-import com.fungames.combate.core.exceptions.InvalidCellPositionException;
-import com.fungames.combate.pieces.GamePiece;
+import com.fungames.combate.core.exceptions.CellNotExistsException;
+import com.fungames.combate.pieces.Piece;
 import com.fungames.combate.pieces.Soldier;
+import com.fungames.combate.pieces.direction.Direction;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -32,32 +33,31 @@ class BoardTests {
 
         int totalCells = board.totalGridCells();
         assertEquals(100, totalCells);
-
-        var cellOptional = board.getCellAt(Position.of(2, 5));
-        assertTrue(cellOptional.isEmpty());
+        assertThrows(CellNotExistsException.class,
+                () -> board.getCellAt(Position.of(2, 5)));
     }
 
     @Test
     void shouldInitTheGridWithCells() {
-        var cellOptional = board.getCellAt(Position.of(2, 5));
-        assertNotNull(cellOptional.get());
+        var cell = board.getCellAt(Position.of(2, 5));
+        assertNotNull(cell);
     }
 
     @Test
     void shouldRetrieveCellWithNonEmptyPosition() {
-        var optionalCell = board.getCellAt(Position.of(2, 5));
+        var cell = board.getCellAt(Position.of(2, 5));
 
-        assertNotNull(optionalCell.get().getPosition());
-        assertEquals(2, optionalCell.get().line());
-        assertEquals(5, optionalCell.get().column());
+        assertNotNull(cell.getPosition());
+        assertEquals(2, cell.line());
+        assertEquals(5, cell.column());
     }
 
     @Test
     void shouldAddAGamePieceToABoardGridProperly() {
         var pos5x7 = Position.of(5, 7);
-        board.add(Soldier.create(), pos5x7);
+        board.add(Item.createItem(Soldier.newSoldier(), pos5x7));
 
-        Optional<GamePiece> piece = board.getPieceAt(pos5x7);
+        Optional<Piece> piece = board.getPieceAt(pos5x7);
 
         var pieceInCell = piece.get();
         assertNotNull(pieceInCell);
@@ -67,14 +67,21 @@ class BoardTests {
     @Test
     void shouldThrowNoSuchElementExceptionWhenGetEmptyOptionalPiece() {
         var position = Position.of(5, 7);
-        Optional<GamePiece> piece = board.getPieceAt(position);
+        Optional<Piece> piece = board.getPieceAt(position);
 
         assertThrows(NoSuchElementException.class, piece::get);
     }
 
-    //TODO implement move() method
     @Test
-    void shouldMoveAPieceAtAGivenPosition() {
+    void shouldMoveSelectedItemToANewPosition() {
+        var soldier = Item.createItem(Soldier.newSoldier(), Position.of(2, 5));
+        board.setSelectedItem(soldier);
+        board.moveSelectedItem(Direction.UP);
 
+        Cell cellAtPosition1x5 = board.getCellAt(Position.of(1, 5));
+        Piece pieceOfSelectedItem = board.getSelectedItem().getPiece();
+
+        assertEquals(Position.of(1, 5), board.getSelectedItem().getCurrentPosition());
+        assertTrue(cellAtPosition1x5.contains(pieceOfSelectedItem));
     }
 }

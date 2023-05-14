@@ -2,11 +2,11 @@ package com.fungames.combate.pieces;
 
 import com.fungames.combate.pieces.type.Type;
 
-public class Soldier extends GamePiece {
+public class Soldier extends Piece {
 
     private Soldier() {}
 
-    public static Soldier create() {
+    public static Soldier newSoldier() {
         return new Soldier();
     }
 
